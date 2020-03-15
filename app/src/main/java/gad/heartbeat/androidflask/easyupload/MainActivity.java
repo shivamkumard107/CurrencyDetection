@@ -280,13 +280,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void selectImage(View v) {
-        Intent intent = new Intent();
-        intent.setType("*/*");
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_CODE);
-    }
+//    public void selectImage(View v) {
+//        Intent intent = new Intent();
+//        intent.setType("*/*");
+//        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), GALLERY_CODE);
+//    }
 
 
 
