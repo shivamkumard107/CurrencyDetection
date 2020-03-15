@@ -7,4 +7,10 @@
     <string name="instructions_en">For best results, the bank note may be placed at a distance of approximately 5 to 7 inches in front of the rear camera.</string>
     <string name="instructions_hi">सर्वोत्तम परिणामों के लिए, बैंक नोट को रियर कैमरे के सामने लगभग 5 से 7 इंच की दूरी पर रखा जा सकता है।</string>
     <string name="skip">Skip</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="preview_description">Image and Video preview will appear here</string>
+    <string name="btn_take_picture">Take Picture</string>
+    <string name="btn_record_video">Record Video</string>
+    <string name="btn_choose_picture">Choose Picture</string>
 </resources>
