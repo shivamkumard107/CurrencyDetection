@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TakePictureActivity"
+        <activity android:name=".ResultActivity"></activity>
+        <activity
+            android:name=".TakePictureActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,12 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WelcomeScreenActivity">
-
-        </activity>
+        <activity android:name=".WelcomeScreenActivity"></activity>
         <activity android:name=".AskPermissionActivity" />
         <activity android:name=".InstructionActivity" /> <!-- android:networkSecurityConfig="@xml/network_security_config" -->
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

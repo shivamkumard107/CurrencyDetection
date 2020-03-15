@@ -26,7 +26,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -85,7 +84,6 @@ public class TakePictureActivity extends AppCompatActivity {
 
 
     public static String getPath(final Context context, final Uri uri) {
-
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
         // DocumentProvider
@@ -340,92 +338,6 @@ public class TakePictureActivity extends AppCompatActivity {
         postRequest(postUrl, postBodyImage);
     }
 
-    public void audioPlayer(String note) {
-        //set up MediaPlayer
-        try {
-            MediaPlayer mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.speech);
-            switch (note) {
-                case "10":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a10);
-                    break;
-                case "10_1":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a10);
-                    break;
-                case "10back":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a10back);
-                    break;
-                case "10_new":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a10_new);
-                    break;
-                case "10_newback":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a10_newback);
-                    break;
-                case "20":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a20);
-                    break;
-                case "20back":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a20back);
-                    break;
-                case "20_new":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a20_new);
-                    break;
-                case "20_newback":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a20_newback);
-                    break;
-                case "50":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a50);
-                    break;
-                case "50back":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a50back);
-                    break;
-                case "50_new":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a50_new);
-                    break;
-                case "50_newback":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a50_newback);
-                    break;
-                case "100":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a100);
-                    break;
-                case "100back":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a100back);
-                    break;
-                case "100_new":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a100_new);
-                    break;
-                case "100_newback":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a100_newback);
-                    break;
-                case "200":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a200);
-                    break;
-                case "500":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a500);
-                    break;
-                case "500back":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a500back);
-                    break;
-                case "500_1":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a500_1);
-                    break;
-                case "500_2":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a500_2);
-                    break;
-                case "2000":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a2000);
-                    break;
-                case "2000back":
-                    mPlayer = MediaPlayer.create(TakePictureActivity.this, R.raw.a2000back);
-                    break;
-
-            }
-            mPlayer.start();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     void postRequest(String postUrl, RequestBody postBody) {
 
         OkHttpClient client = new OkHttpClient();
@@ -458,13 +370,16 @@ public class TakePictureActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
+                            Intent intent = new Intent(TakePictureActivity.this, ResultActivity.class);
                             String res = response.body().string();
-                            Toast.makeText(TakePictureActivity.this, "Server's Response\n" + res, Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(TakePictureActivity.this, "Server's Response\n" + res, Toast.LENGTH_SHORT).show();
                             JSONObject Jobject = new JSONObject(res);
                             String note = Jobject.getString("note");
-                            audioPlayer(note);
-                            Toast.makeText(TakePictureActivity.this, note, Toast.LENGTH_SHORT).show();
 
+                            intent.putExtra("note_value", note);
+                            intent.putExtra("note_image", imageStoragePath);
+                            startActivity(intent);
+//                            Toast.makeText(TakePictureActivity.this, note, Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             Toast.makeText(TakePictureActivity.this, "error1", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
@@ -505,22 +420,14 @@ public class TakePictureActivity extends AppCompatActivity {
      * Launching camera app to record video
      */
     private void captureVideo() {
-        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        //to be removed
+    }
 
-        File file = CameraUtils.getOutputMediaFile(MEDIA_TYPE_VIDEO);
-        if (file != null) {
-            imageStoragePath = file.getAbsolutePath();
-        }
-
-        Uri fileUri = CameraUtils.getOutputMediaFileUri(getApplicationContext(), file);
-
-        // set video quality
-        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file
-
-        // start the video capture Intent
-        startActivityForResult(intent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     /**
@@ -531,12 +438,10 @@ public class TakePictureActivity extends AppCompatActivity {
         // if the result is capturing Image
         if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                // Refreshing the gallery
-                CameraUtils.refreshGallery(getApplicationContext(), imageStoragePath);
-
-                // successfully captured the image
-                // display it in image view
                 previewCapturedImage();
+                selectedImagesPaths = new ArrayList<>();
+                selectedImagesPaths.add(imageStoragePath);
+                imagesSelected = true;
             } else if (resultCode == RESULT_CANCELED) {
                 // user cancelled Image capture
                 Toast.makeText(getApplicationContext(),
@@ -550,20 +455,19 @@ public class TakePictureActivity extends AppCompatActivity {
             }
         } else if (requestCode == GALLERY_CODE && resultCode == RESULT_OK && null != data) {
             Uri myImageUri = data.getData();
+            Log.d("URI Logging", String.valueOf(data.getData()));
             imgPreview.setImageURI(myImageUri);
             String currentImagePath;
             selectedImagesPaths = new ArrayList<>();
             TextView numSelectedImages = findViewById(R.id.numSelectedImages);
-            if (data.getData() != null) {
-                Uri uri = data.getData();
-                currentImagePath = getPath(getApplicationContext(), uri);
-                Log.d("ImageDetails", "Single Image URI : " + uri);
-                Log.d("ImageDetails", "Single Image Path : " + currentImagePath);
-                selectedImagesPaths.add(currentImagePath);
-                imagesSelected = true;
+            Uri uri = data.getData();
+            currentImagePath = getPath(getApplicationContext(), uri);
+            Log.d("ImageDetails", "Single Image URI : " + uri);
+            Log.d("ImageDetails", "Single Image Path : " + currentImagePath);
+            selectedImagesPaths.add(currentImagePath);
+            imagesSelected = true;
 //                numSelectedImages.setText("Number of Selected Images : " + selectedImagesPaths.size());
-            }
-        }else {
+        } else {
             Toast.makeText(this, "Can't Load Image", Toast.LENGTH_SHORT).show();
         }
     }
