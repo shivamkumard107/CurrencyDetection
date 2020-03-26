@@ -74,6 +74,7 @@ public class TakePictureActivity extends AppCompatActivity {
                     + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
                     + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
                     + "|[1-9][0-9]|[0-9]))");
+    private static String url;
     private static String imageStoragePath;
     final int GALLERY_CODE = 1;
     ArrayList<String> selectedImagesPaths;
@@ -296,18 +297,19 @@ public class TakePictureActivity extends AppCompatActivity {
         Toast.makeText(this, "Sending the Files. Please Wait ...", Toast.LENGTH_SHORT).show();
 
         EditText ipv4AddressView = findViewById(R.id.IPAddress);
+        url = ipv4AddressView.getText().toString();
         String ipv4Address = ipv4AddressView.getText().toString();
         EditText portNumberView = findViewById(R.id.portNumber);
         String portNumber = portNumberView.getText().toString();
 
-        Matcher matcher = IP_ADDRESS.matcher(ipv4Address);
-        if (!matcher.matches()) {
-            Toast.makeText(this, "Invalid IPv4 Address. Please Check Your Inputs.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        Matcher matcher = IP_ADDRESS.matcher(ipv4Address);
+//        if (!matcher.matches()) {
+//            Toast.makeText(this, "Invalid IPv4 Address. Please Check Your Inputs.", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
 
-        String postUrl = "http://" + ipv4Address + ":" + portNumber + "/image";
-
+//        String postUrl = "http://" + ipv4Address + ":" + portNumber + "/image";
+        String postUrl = url + "/image";
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
         for (int i = 0; i < selectedImagesPaths.size(); i++) {
