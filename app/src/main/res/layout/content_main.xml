@@ -49,6 +49,7 @@
             android:layout_weight="1"
             android:background="@color/colorPrimary"
             android:foreground="?attr/selectableItemBackground"
+            android:hapticFeedbackEnabled="true"
             android:text="@string/btn_take_picture"
             android:textColor="@android:color/white" />
 
@@ -61,18 +62,21 @@
             android:layout_weight="1"
             android:background="@color/colorPrimary"
             android:foreground="?attr/selectableItemBackground"
+            android:hapticFeedbackEnabled="true"
             android:text="@string/btn_record_video"
             android:textColor="@android:color/white"
-            android:visibility="gone"/>
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/btnChoosePicture"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dimen_8"
             android:layout_weight="1"
-            android:onClick="selectImage"
             android:background="@color/colorPrimary"
             android:foreground="?attr/selectableItemBackground"
+            android:hapticFeedbackEnabled="true"
+            android:onClick="selectImage"
             android:text="@string/btn_choose_picture"
             android:textColor="@android:color/white" />
     </LinearLayout>
@@ -81,14 +85,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp">
+
         <Button
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Submit"
             android:layout_weight="1"
-            android:onClick="connectServer"
             android:background="@color/colorPrimary"
             android:foreground="?attr/selectableItemBackground"
-            android:textColor="@android:color/white"/>
+            android:hapticFeedbackEnabled="true"
+            android:onClick="connectServer"
+            android:text="Submit"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

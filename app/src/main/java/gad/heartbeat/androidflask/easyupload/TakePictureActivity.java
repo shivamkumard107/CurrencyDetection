@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Vibrator;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
@@ -82,6 +83,7 @@ public class TakePictureActivity extends AppCompatActivity {
     private TextView txtDescription;
     private ImageView imgPreview;
     private Button btnCapturePicture;
+    private Vibrator mVib;
 
 
     public static String getPath(final Context context, final Uri uri) {
@@ -186,6 +188,7 @@ public class TakePictureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_take_picture);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mVib = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 
         // Checking availability of the camera
         if (!CameraUtils.isDeviceSupportCamera(getApplicationContext())) {
@@ -206,6 +209,7 @@ public class TakePictureActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
+                mVib.vibrate(50);
                 if (CameraUtils.checkPermissions(getApplicationContext())) {
                     captureImage();
                 } else {
@@ -290,6 +294,7 @@ public class TakePictureActivity extends AppCompatActivity {
     }
 
     public void connectServer(View v) {
+        mVib.vibrate(50);
         if (imagesSelected == false) { // This means no image is selected and thus nothing to upload.
             Toast.makeText(this, "No Image Selected to Upload. Select Image(s) and Try Again.", Toast.LENGTH_SHORT).show();
             return;
@@ -518,6 +523,7 @@ public class TakePictureActivity extends AppCompatActivity {
     }
 
     public void selectImage(View v) {
+        mVib.vibrate(50);
         Intent intent = new Intent();
         intent.setType("*/*");
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);

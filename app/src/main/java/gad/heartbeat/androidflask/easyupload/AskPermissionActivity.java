@@ -2,6 +2,7 @@ package gad.heartbeat.androidflask.easyupload;
 
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,17 +11,25 @@ import android.widget.Button;
 public class AskPermissionActivity extends AppCompatActivity {
     private MediaPlayer mPlayer_en, mPlayer_hi;
     private Button btSkip;
+    private Vibrator mVib;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ask_permission);
+        mVib = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
+
+        //calling audio to play audio instructions
         audioPlayer();
+
+        //go to next activity if skip button pressed
         btSkip = findViewById(R.id.bt_skip_permission);
         btSkip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mPlayer_en.stop();
                 mPlayer_hi.stop();
+                mVib.vibrate(50);
+
                 //TODO: ask for permission here then proceed to next activity
                 startActivity(new Intent(AskPermissionActivity.this, InstructionActivity.class));
             }

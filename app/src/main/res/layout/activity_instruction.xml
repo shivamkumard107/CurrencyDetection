@@ -34,5 +34,6 @@
         android:text="@string/skip"
         android:background="@color/colorPrimary"
         android:textColor="@android:color/white"
-        android:textSize="25sp" />
+        android:textSize="25sp"
+        android:hapticFeedbackEnabled="true"/>
 </RelativeLayout>
