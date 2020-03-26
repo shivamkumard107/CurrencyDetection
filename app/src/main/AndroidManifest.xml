@@ -19,13 +19,15 @@
         <activity
             android:name=".TakePictureActivity"
             android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+        <activity android:name=".WelcomeScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".WelcomeScreenActivity"></activity>
         <activity android:name=".AskPermissionActivity" />
         <activity android:name=".InstructionActivity" /> <!-- android:networkSecurityConfig="@xml/network_security_config" -->
         <activity android:name=".MainActivity" />

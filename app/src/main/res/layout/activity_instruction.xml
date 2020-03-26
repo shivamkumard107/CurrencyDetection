@@ -26,10 +26,13 @@
         android:layout_below="@id/instr_en"/>
 
     <Button
+        android:id="@+id/bt_skip_instructions"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:layout_margin="5dp"
         android:text="@string/skip"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
         android:textSize="25sp" />
 </RelativeLayout>
