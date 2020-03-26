@@ -47,7 +47,8 @@
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50sp"
-        android:src="@drawable/ic_speak" />
+        android:src="@drawable/ic_speak"
+        android:hapticFeedbackEnabled="true"/>
 
     <Button
         android:id="@+id/bt_scan"
@@ -58,6 +59,7 @@
         android:background="@color/colorPrimary"
         android:text="Scan Again"
         android:textSize="30sp"
-        android:textColor="@android:color/white" />
+        android:textColor="@android:color/white"
+        android:hapticFeedbackEnabled="true"/>
 
 </RelativeLayout>

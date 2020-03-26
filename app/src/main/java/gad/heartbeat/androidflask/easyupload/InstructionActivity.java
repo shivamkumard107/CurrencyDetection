@@ -31,6 +31,7 @@ public class InstructionActivity extends AppCompatActivity {
                 mVib.vibrate(50);
                 Intent i = new Intent(InstructionActivity.this, TakePictureActivity.class);
                 //TODO: add flags to clear top
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }
         });

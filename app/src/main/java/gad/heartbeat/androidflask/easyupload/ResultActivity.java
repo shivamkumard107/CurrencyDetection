@@ -3,6 +3,7 @@ package gad.heartbeat.androidflask.easyupload;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.MediaPlayer;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,10 +21,12 @@ public class ResultActivity extends AppCompatActivity {
     private TextView tvNoteValue;
     private ImageView ivSpeaker;
     private Button btScanAnother;
+    private Vibrator mVib;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+        mVib = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 
         imgPreview = findViewById(R.id.iv_bank_note);
         tvNoteValue = findViewById(R.id.tv_note_value);
@@ -41,6 +44,7 @@ public class ResultActivity extends AppCompatActivity {
         ivSpeaker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mVib.vibrate(50);
                 ivSpeaker.setImageResource(R.drawable.ic_speak);
                 audioPlayer(noteValue);
                 ivSpeaker.setImageResource(R.drawable.ic_stop_speak);
@@ -49,8 +53,9 @@ public class ResultActivity extends AppCompatActivity {
         btScanAnother.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mVib.vibrate(50);
                 Intent intent = new Intent(ResultActivity.this, TakePictureActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP & Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
             }
         });
@@ -71,7 +76,7 @@ public class ResultActivity extends AppCompatActivity {
                 case "10":
                     mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a10);
                     break;
-                case "10_1":
+                case "10_1.":
                     mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a10);
                     break;
                 case "10back":
