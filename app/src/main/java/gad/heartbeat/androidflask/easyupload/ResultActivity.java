@@ -74,8 +74,6 @@ public class ResultActivity extends AppCompatActivity {
             MediaPlayer mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.speech);
             switch (note) {
                 case "10":
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a10);
-                    break;
                 case "10_1.":
                     mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a10);
                     break;
