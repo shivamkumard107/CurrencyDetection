@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,10 +19,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,7 +39,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
@@ -72,10 +68,10 @@ public class TakePictureActivity extends AppCompatActivity {
                     + "|[1-9][0-9]|[0-9]))");
     //    private static String url = "https://pure-hamlet-93188.herokuapp.com";
     private static String url = "http://192.168.0.108:5000";
-    private static String imageStoragePath;
     final int GALLERY_CODE = 1;
-    ArrayList<String> selectedImagesPaths;
     boolean imagesSelected = false;
+    private String imageStoragePath;
+    private ArrayList<String> selectedImagesPaths;
     private TextView txtDescription;
     private ImageView imgPreview;
     private Button btnCapturePicture;
@@ -180,6 +176,7 @@ public class TakePictureActivity extends AppCompatActivity {
         setContentView(R.layout.activity_take_picture);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        imageStoragePath = null;
         mVib = (Vibrator) this.getSystemService(VIBRATOR_SERVICE);
 
         // Checking availability of the camera
@@ -319,10 +316,6 @@ public class TakePictureActivity extends AppCompatActivity {
 
         RequestBody postBodyImage = multipartBodyBuilder.build();
 
-//        RequestBody postBodyImage = new MultipartBody.Builder()
-//                .setType(MultipartBody.FORM)
-//                .addFormDataPart("image", "androidFlask.jpg", RequestBody.create(MediaType.parse("image/*jpg"), byteArray))
-//                .build();
 
         postRequest(postUrl, postBodyImage);
     }
@@ -341,8 +334,6 @@ public class TakePictureActivity extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 // Cancel the post on failure.
                 call.cancel();
-                Log.d("FAIL", e.getMessage());
-
                 // In order to access the TextView inside the UI thread, the code is executed inside runOnUiThread()
                 runOnUiThread(new Runnable() {
                     @Override
@@ -361,12 +352,13 @@ public class TakePictureActivity extends AppCompatActivity {
                         try {
                             Intent intent = new Intent(TakePictureActivity.this, ResultActivity.class);
                             String res = response.body().string();
-//                            Toast.makeText(TakePictureActivity.this, "Server's Response\n" + res, Toast.LENGTH_SHORT).show();
                             JSONObject Jobject = new JSONObject(res);
                             String note = Jobject.getString("note");
-
                             intent.putExtra("note_value", note);
-                            intent.putExtra("note_image", imageStoragePath);
+                            if (imageStoragePath != null)
+                                intent.putExtra("note_image", imageStoragePath);
+                            else
+                                intent.putExtra("note_image", selectedImagesPaths.get(0));
                             startActivity(intent);
                             finish();
 //                            Toast.makeText(TakePictureActivity.this, note, Toast.LENGTH_SHORT).show();
@@ -439,14 +431,11 @@ public class TakePictureActivity extends AppCompatActivity {
             }
         } else if (requestCode == GALLERY_CODE && resultCode == RESULT_OK && null != data) {
             Uri myImageUri = data.getData();
-            Log.d("URI Logging", String.valueOf(data.getData()));
             imgPreview.setImageURI(myImageUri);
             String currentImagePath;
             selectedImagesPaths = new ArrayList<>();
             Uri uri = data.getData();
             currentImagePath = getPath(getApplicationContext(), uri);
-            Log.d("ImageDetails", "Single Image URI : " + uri);
-            Log.d("ImageDetails", "Single Image Path : " + currentImagePath);
             selectedImagesPaths.add(currentImagePath);
             imagesSelected = true;
 //                numSelectedImages.setText("Number of Selected Images : " + selectedImagesPaths.size());

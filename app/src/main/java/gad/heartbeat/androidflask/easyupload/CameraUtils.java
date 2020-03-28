@@ -61,7 +61,7 @@ public class CameraUtils {
      */
     public static boolean isDeviceSupportCamera(Context context) {
         if (context.getPackageManager().hasSystemFeature(
-                PackageManager.FEATURE_CAMERA)) {
+                PackageManager.FEATURE_CAMERA_FRONT)) {
             // this device has a camera
             return true;
         } else {
@@ -113,10 +113,7 @@ public class CameraUtils {
         if (type == TakePictureActivity.MEDIA_TYPE_IMAGE) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator
                     + "IMG_" + timeStamp + "." + TakePictureActivity.IMAGE_EXTENSION);
-        } else if (type == TakePictureActivity.MEDIA_TYPE_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator
-                    + "VID_" + timeStamp + "." + TakePictureActivity.VIDEO_EXTENSION);
-        } else {
+        }else {
             return null;
         }
 
