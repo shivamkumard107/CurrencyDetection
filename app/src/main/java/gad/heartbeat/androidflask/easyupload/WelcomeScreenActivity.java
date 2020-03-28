@@ -1,6 +1,7 @@
 package gad.heartbeat.androidflask.easyupload;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
@@ -32,7 +33,13 @@ public class WelcomeScreenActivity extends AppCompatActivity {
                 mPlayer_en.stop();
                 mPlayer_hi.stop();
                 mVib.vibrate(50);
+                SharedPreferences sharedPref = getSharedPreferences("mySettings", MODE_PRIVATE);
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean("welcome", true);
+                editor.apply();
                 startActivity(new Intent(WelcomeScreenActivity.this, AskPermissionActivity.class));
+                finish();
             }
         });
 
@@ -52,7 +59,13 @@ public class WelcomeScreenActivity extends AppCompatActivity {
         mPlayer_hi.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
+                SharedPreferences sharedPref = getSharedPreferences("mySettings", MODE_PRIVATE);
+
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putBoolean("welcome", true);
+                editor.apply();
                 startActivity(new Intent(WelcomeScreenActivity.this, AskPermissionActivity.class));
+                finish();
             }
         });
 
