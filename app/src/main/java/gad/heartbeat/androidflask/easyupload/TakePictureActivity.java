@@ -75,7 +75,8 @@ public class TakePictureActivity extends AppCompatActivity {
                     + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
                     + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
                     + "|[1-9][0-9]|[0-9]))");
-    private static String url = "https://pure-hamlet-93188.herokuapp.com";
+    //    private static String url = "https://pure-hamlet-93188.herokuapp.com";
+    private static String url = "http://192.168.0.108:5000";
     private static String imageStoragePath;
     final int GALLERY_CODE = 1;
     ArrayList<String> selectedImagesPaths;
@@ -380,6 +381,7 @@ public class TakePictureActivity extends AppCompatActivity {
                             intent.putExtra("note_value", note);
                             intent.putExtra("note_image", imageStoragePath);
                             startActivity(intent);
+                            finish();
 //                            Toast.makeText(TakePictureActivity.this, note, Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             Toast.makeText(TakePictureActivity.this, "error1", Toast.LENGTH_SHORT).show();
