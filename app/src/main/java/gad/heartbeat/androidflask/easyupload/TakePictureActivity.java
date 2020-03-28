@@ -58,17 +58,12 @@ public class TakePictureActivity extends AppCompatActivity {
     // key to store image path in savedInstance state
     public static final String KEY_IMAGE_STORAGE_PATH = "image_path";
     public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int MEDIA_TYPE_VIDEO = 2;
     // Bitmap sampling size
     public static final int BITMAP_SAMPLE_SIZE = 8;
-    // Gallery directory name to store the images or videos
     public static final String GALLERY_DIRECTORY_NAME = "CurrencyDetection";
-    // Image and Video file extensions
     public static final String IMAGE_EXTENSION = "jpg";
-    public static final String VIDEO_EXTENSION = "mp4";
     // Activity request codes
     private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
-    private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
     private static final Pattern IP_ADDRESS
             = Pattern.compile(
             "((25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9])\\.(25[0-5]|2[0-4]"
@@ -122,10 +117,6 @@ public class TakePictureActivity extends AppCompatActivity {
                 Uri contentUri = null;
                 if ("image".equals(type)) {
                     contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                } else if ("video".equals(type)) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-                } else if ("audio".equals(type)) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
                 }
 
                 final String selection = "_id=?";
@@ -235,8 +226,6 @@ public class TakePictureActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(imageStoragePath)) {
                     if (imageStoragePath.substring(imageStoragePath.lastIndexOf(".")).equals("." + IMAGE_EXTENSION)) {
                         previewCapturedImage();
-                    } else if (imageStoragePath.substring(imageStoragePath.lastIndexOf(".")).equals("." + VIDEO_EXTENSION)) {
-                        previewVideo();
                     }
                 }
             }
@@ -259,8 +248,6 @@ public class TakePictureActivity extends AppCompatActivity {
                             if (type == MEDIA_TYPE_IMAGE) {
                                 // capture picture
                                 captureImage();
-                            } else {
-                                captureVideo();
                             }
 
                         } else if (report.isAnyPermissionPermanentlyDenied()) {
@@ -419,12 +406,6 @@ public class TakePictureActivity extends AppCompatActivity {
         imageStoragePath = savedInstanceState.getString(KEY_IMAGE_STORAGE_PATH);
     }
 
-    /**
-     * Launching camera app to record video
-     */
-    private void captureVideo() {
-        //to be removed
-    }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -462,7 +443,6 @@ public class TakePictureActivity extends AppCompatActivity {
             imgPreview.setImageURI(myImageUri);
             String currentImagePath;
             selectedImagesPaths = new ArrayList<>();
-            TextView numSelectedImages = findViewById(R.id.numSelectedImages);
             Uri uri = data.getData();
             currentImagePath = getPath(getApplicationContext(), uri);
             Log.d("ImageDetails", "Single Image URI : " + uri);
@@ -483,17 +463,6 @@ public class TakePictureActivity extends AppCompatActivity {
             Bitmap bitmap = CameraUtils.optimizeBitmap(BITMAP_SAMPLE_SIZE, imageStoragePath);
             imgPreview.setImageBitmap(bitmap);
         } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Displaying video in VideoView
-     */
-    private void previewVideo() {
-        try {
-            //do nothing. To be removed later
-        } catch (Exception e) {
             e.printStackTrace();
         }
     }
