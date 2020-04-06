@@ -5,7 +5,6 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -44,6 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
@@ -54,6 +54,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okio.Timeout;
 
 public class TakePictureActivity extends AppCompatActivity {
     // key to store image path in savedInstance state
@@ -81,7 +82,6 @@ public class TakePictureActivity extends AppCompatActivity {
     private ImageView imgPreview;
     private Button btnCapturePicture;
     private Vibrator mVib;
-    public static String URL = "";
 
 
     public static String getPath(final Context context, final Uri uri) {
@@ -285,19 +285,15 @@ public class TakePictureActivity extends AppCompatActivity {
     }
 
     public void connectServer(View v) {
-        SharedPreferences sharedPref = getSharedPreferences("mySettings", MODE_PRIVATE);
-        String local_url = sharedPref.getString("url", "");
+
         mVib.vibrate(50);
         if (!imagesSelected) { // This means no image is selected and thus nothing to upload.
             Toast.makeText(this, "No Image Selected to Upload. Select Image(s) and Try Again.", Toast.LENGTH_SHORT).show();
             return;
-        } else if (local_url == null || local_url.equals("")) {
-            Toast.makeText(this, "specify the url", Toast.LENGTH_SHORT).show();
-            return;
         }
         Toast.makeText(this, "Sending the Files. Please Wait ...", Toast.LENGTH_SHORT).show();
 
-        String postUrl = local_url + "image";
+        String postUrl = "http://192.168.0.108:4555/image";
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
         for (int i = 0; i < selectedImagesPaths.size(); i++) {
@@ -326,8 +322,9 @@ public class TakePictureActivity extends AppCompatActivity {
 
     void postRequest(String postUrl, RequestBody postBody) {
 
-        OkHttpClient client = new OkHttpClient();
-
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .build();
         Request request = new Request.Builder()
                 .url(postUrl)
                 .post(postBody)
@@ -514,25 +511,18 @@ public class TakePictureActivity extends AppCompatActivity {
             // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
             input.setInputType(InputType.TYPE_CLASS_TEXT);
             builder.setView(input);
-            input.setHint(URL);
+
 
             // Set up the buttons
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    URL = input.getText().toString();
-                    SharedPreferences sharedPref = getSharedPreferences("mySettings", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString("url", URL);
-                    editor.apply();
-                    Toast.makeText(TakePictureActivity.this, URL, Toast.LENGTH_SHORT).show();
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
-                    Toast.makeText(TakePictureActivity.this, URL, Toast.LENGTH_SHORT).show();
                 }
             });
 
