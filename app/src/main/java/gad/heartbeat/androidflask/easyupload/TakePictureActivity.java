@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -70,8 +71,8 @@ public class TakePictureActivity extends AppCompatActivity {
                     + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
                     + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
                     + "|[1-9][0-9]|[0-9]))");
-    //    private static String url = "https://pure-hamlet-93188.herokuapp.com";
-    private static String url = "http://192.168.0.108:5000";
+
+
     final int GALLERY_CODE = 1;
     boolean imagesSelected = false;
     private String imageStoragePath;
@@ -80,7 +81,7 @@ public class TakePictureActivity extends AppCompatActivity {
     private ImageView imgPreview;
     private Button btnCapturePicture;
     private Vibrator mVib;
-    private String m_Text = "";
+    public static String URL = "";
 
 
     public static String getPath(final Context context, final Uri uri) {
@@ -284,21 +285,19 @@ public class TakePictureActivity extends AppCompatActivity {
     }
 
     public void connectServer(View v) {
+        SharedPreferences sharedPref = getSharedPreferences("mySettings", MODE_PRIVATE);
+        String local_url = sharedPref.getString("url", "");
         mVib.vibrate(50);
-        if (imagesSelected == false) { // This means no image is selected and thus nothing to upload.
+        if (!imagesSelected) { // This means no image is selected and thus nothing to upload.
             Toast.makeText(this, "No Image Selected to Upload. Select Image(s) and Try Again.", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (local_url == null || local_url.equals("")) {
+            Toast.makeText(this, "specify the url", Toast.LENGTH_SHORT).show();
             return;
         }
         Toast.makeText(this, "Sending the Files. Please Wait ...", Toast.LENGTH_SHORT).show();
 
-//        Matcher matcher = IP_ADDRESS.matcher(ipv4Address);
-//        if (!matcher.matches()) {
-//            Toast.makeText(this, "Invalid IPv4 Address. Please Check Your Inputs.", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-
-//        String postUrl = "http://" + ipv4Address + ":" + portNumber + "/image";
-        String postUrl = url + "/image";
+        String postUrl = local_url + "image";
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
         for (int i = 0; i < selectedImagesPaths.size(); i++) {
@@ -515,21 +514,25 @@ public class TakePictureActivity extends AppCompatActivity {
             // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
             input.setInputType(InputType.TYPE_CLASS_TEXT);
             builder.setView(input);
-            input.setHint("http://192.168.0.108:5000");
+            input.setHint(URL);
 
             // Set up the buttons
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    m_Text = input.getText().toString();
-                    Toast.makeText(TakePictureActivity.this, m_Text, Toast.LENGTH_SHORT).show();
+                    URL = input.getText().toString();
+                    SharedPreferences sharedPref = getSharedPreferences("mySettings", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString("url", URL);
+                    editor.apply();
+                    Toast.makeText(TakePictureActivity.this, URL, Toast.LENGTH_SHORT).show();
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
-                    Toast.makeText(TakePictureActivity.this, m_Text, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TakePictureActivity.this, URL, Toast.LENGTH_SHORT).show();
                 }
             });
 
