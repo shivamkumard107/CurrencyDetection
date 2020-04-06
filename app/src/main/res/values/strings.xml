@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">EasyUpload</string>
-    <string name="welcome_en">Welcome. Please Listen to the instructions carefully. Instructions will be read out once in every screen. You can listen to the instructions anytime by tapping on manual button in the help screen.</string>
-    <string name="welcome_hi">स्वागत हे। कृपया निर्देशों को ध्यान से सुनें। निर्देश हर स्क्रीन में एक बार पढ़े जाएंगे। आप मदद स्क्रीन में मैनुअल बटन पर टैप करके कभी भी निर्देश सुन सकते हैं।</string>
+    <string name="welcome_en">Welcome. Please Listen to the instructions carefully. Instructions will be read out once in every screen. You can skip the instructions by tapping the skip button at the bottom of screen</string>
+    <string name="welcome_hi">स्वागत हे। कृपया निर्देशों को ध्यान से सुनें। निर्देश हर स्क्रीन में एक बार पढ़े जाएंगे। आप स्क्रीन के नीचे स्किप बटन पर टैप करके निर्देशों को छोड़ सकते हैंं।</string>
     <string name="ask_permission_en">Please give permission for mic to access voice command feature and camera to scan Indian banknotes.</string>
     <string name="ask_permission_hi">कृपया भारतीय बैंक नोटों को स्कैन करने के लिए माइक को वॉयस कमांड फीचर और कैमरा एक्सेस करने की अनुमति दें।</string>
-    <string name="instructions_en">For best results, the bank note may be placed at a distance of approximately 5 to 7 inches in front of the rear camera.</string>
-    <string name="instructions_hi">सर्वोत्तम परिणामों के लिए, बैंक नोट को रियर कैमरे के सामने लगभग 5 से 7 इंच की दूरी पर रखा जा सकता है।</string>
+    <string name="instructions_en">For best results, the bank note may be placed at a distance of approximately 5 to 7 inches in front of the rear camera.
+        You can capture and submit the bank note by clicking on the button at the bottom of screen</string>
+    <string name="instructions_hi">सर्वोत्तम परिणामों के लिए, बैंक नोट को रियर कैमरे के सामने लगभग 5 से 7 इंच की दूरी पर रखा जा सकता है। आप स्क्रीन के नीचे बटन पर क्लिक करके बैंक नोट को कैप्चर और सबमिट कर सकते हैं।</string>
     <string name="skip">Skip</string>
 
     <string name="action_settings">Settings</string>

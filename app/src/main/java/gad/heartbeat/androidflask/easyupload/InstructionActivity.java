@@ -44,8 +44,8 @@ public class InstructionActivity extends AppCompatActivity {
     }
     public void audioPlayer(){
         //set up MediaPlayer
-        mPlayer_en= MediaPlayer.create(InstructionActivity.this, R.raw.instructions_en);
-        mPlayer_hi = MediaPlayer.create(InstructionActivity.this, R.raw.instructions_hi);
+        mPlayer_en= MediaPlayer.create(InstructionActivity.this, R.raw.instruction_en);
+        mPlayer_hi = MediaPlayer.create(InstructionActivity.this, R.raw.instruction_hi);
         mPlayer_en.start();
         mPlayer_en.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -66,5 +66,12 @@ public class InstructionActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mPlayer_en.stop();
+        mPlayer_hi.stop();
     }
 }

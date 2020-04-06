@@ -43,7 +43,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
@@ -54,7 +53,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okio.Timeout;
 
 public class TakePictureActivity extends AppCompatActivity {
     // key to store image path in savedInstance state
@@ -82,6 +80,7 @@ public class TakePictureActivity extends AppCompatActivity {
     private ImageView imgPreview;
     private Button btnCapturePicture;
     private Vibrator mVib;
+    private String postUrl = "http://192.168.0.108:4555/image";
 
 
     public static String getPath(final Context context, final Uri uri) {
@@ -293,7 +292,7 @@ public class TakePictureActivity extends AppCompatActivity {
         }
         Toast.makeText(this, "Sending the Files. Please Wait ...", Toast.LENGTH_SHORT).show();
 
-        String postUrl = "http://192.168.0.108:4555/image";
+
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
 
         for (int i = 0; i < selectedImagesPaths.size(); i++) {
@@ -322,9 +321,7 @@ public class TakePictureActivity extends AppCompatActivity {
 
     void postRequest(String postUrl, RequestBody postBody) {
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .connectTimeout(30, TimeUnit.SECONDS)
-                .build();
+        OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(postUrl)
                 .post(postBody)
@@ -362,7 +359,6 @@ public class TakePictureActivity extends AppCompatActivity {
                                 intent.putExtra("note_image", selectedImagesPaths.get(0));
                             startActivity(intent);
                             finish();
-//                            Toast.makeText(TakePictureActivity.this, note, Toast.LENGTH_SHORT).show();
                         } catch (IOException e) {
                             Toast.makeText(TakePictureActivity.this, "error1", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();

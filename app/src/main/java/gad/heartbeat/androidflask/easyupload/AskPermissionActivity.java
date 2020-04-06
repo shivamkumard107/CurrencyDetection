@@ -58,7 +58,7 @@ public class AskPermissionActivity extends AppCompatActivity {
 
     public void audioPlayer() {
         //set up MediaPlayer
-        mPlayer_en = MediaPlayer.create(AskPermissionActivity.this, R.raw.permission);
+        mPlayer_en = MediaPlayer.create(AskPermissionActivity.this, R.raw.permission_en);
         mPlayer_hi = MediaPlayer.create(AskPermissionActivity.this, R.raw.permission_hi);
         mPlayer_en.start();
         mPlayer_en.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -111,4 +111,10 @@ public class AskPermissionActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mPlayer_en.stop();
+        mPlayer_hi.stop();
+    }
 }

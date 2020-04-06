@@ -46,7 +46,7 @@ public class WelcomeScreenActivity extends AppCompatActivity {
     }
     public void audioPlayer(){
         //set up MediaPlayer
-        mPlayer_en= MediaPlayer.create(WelcomeScreenActivity.this, R.raw.welcome_en);
+        mPlayer_en= MediaPlayer.create(WelcomeScreenActivity.this, R.raw.welcone_en);
         mPlayer_hi = MediaPlayer.create(WelcomeScreenActivity.this, R.raw.welcome_hi);
         mPlayer_en.start();
         mPlayer_en.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -68,6 +68,13 @@ public class WelcomeScreenActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mPlayer_en.stop();
+        mPlayer_hi.stop();
     }
 }
