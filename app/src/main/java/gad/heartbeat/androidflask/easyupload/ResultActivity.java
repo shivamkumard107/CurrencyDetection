@@ -70,69 +70,20 @@ public class ResultActivity extends AppCompatActivity {
             MediaPlayer mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.speech);
             switch (note) {
                 case "10":
-                case "10_1.":
                     tvNoteValue.setText("10");
                     mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a10);
-                    break;
-                case "10back":
-                    tvNoteValue.setText("10");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a10back);
-                    break;
-                case "10_new":
-                    tvNoteValue.setText("10");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a10_new);
-                    break;
-                case "10_newback":
-                    tvNoteValue.setText("10");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a10_newback);
                     break;
                 case "20":
                     tvNoteValue.setText("20");
                     mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a20);
                     break;
-                case "20back":
-                    tvNoteValue.setText("20");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a20back);
-                    break;
-                case "20_new":
-                    tvNoteValue.setText("20");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a20_new);
-                    break;
-                case "20_newback":
-                    tvNoteValue.setText("20");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a20_newback);
-                    break;
                 case "50":
                     tvNoteValue.setText("50");
                     mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a50);
                     break;
-                case "50back":
-                    tvNoteValue.setText("50");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a50back);
-                    break;
-                case "50_new":
-                    tvNoteValue.setText("50");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a50_new);
-                    break;
-                case "50_newback":
-                    tvNoteValue.setText("50");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a50_newback);
-                    break;
                 case "100":
                     tvNoteValue.setText("100");
                     mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a100);
-                    break;
-                case "100back":
-                    tvNoteValue.setText("100");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a100back);
-                    break;
-                case "100_new":
-                    tvNoteValue.setText("100");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a100_new);
-                    break;
-                case "100_newback":
-                    tvNoteValue.setText("100");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a100_newback);
                     break;
                 case "200":
                     tvNoteValue.setText("200");
@@ -142,27 +93,13 @@ public class ResultActivity extends AppCompatActivity {
                     tvNoteValue.setText("500");
                     mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a500);
                     break;
-                case "500back":
-                    tvNoteValue.setText("500");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a500back);
-                    break;
-                case "500_1":
-                    tvNoteValue.setText("500");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a500_1);
-                    break;
-                case "500_2":
-                    tvNoteValue.setText("500");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a500_2);
-                    break;
                 case "2000":
                     tvNoteValue.setText("2000");
                     mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a2000);
                     break;
-                case "2000back":
-                    tvNoteValue.setText("2000");
-                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.a2000back);
-                    break;
-
+                default:
+                    tvNoteValue.setText("Not Found!");
+                    mPlayer = MediaPlayer.create(ResultActivity.this, R.raw.speech);
             }
             mPlayer.start();
 

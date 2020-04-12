@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EasyUpload</string>
+    <string name="app_name">Currency Detector</string>
     <string name="welcome_en">Welcome. Please Listen to the instructions carefully. Instructions will be read out once in every screen. You can skip the instructions by tapping the skip button at the bottom of screen</string>
     <string name="welcome_hi">स्वागत हे। कृपया निर्देशों को ध्यान से सुनें। निर्देश हर स्क्रीन में एक बार पढ़े जाएंगे। आप स्क्रीन के नीचे स्किप बटन पर टैप करके निर्देशों को छोड़ सकते हैंं।</string>
     <string name="ask_permission_en">Please give permission for mic to access voice command feature and camera to scan Indian banknotes.</string>

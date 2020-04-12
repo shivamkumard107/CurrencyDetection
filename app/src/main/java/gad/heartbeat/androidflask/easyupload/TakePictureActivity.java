@@ -80,7 +80,7 @@ public class TakePictureActivity extends AppCompatActivity {
     private ImageView imgPreview;
     private Button btnCapturePicture;
     private Vibrator mVib;
-    private String postUrl = "http://192.168.0.108:4555/image";
+    private String postUrl = "http://192.168.0.106.:4555/image";
 
 
     public static String getPath(final Context context, final Uri uri) {
