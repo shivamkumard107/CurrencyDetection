@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,12 +21,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Patterns;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +47,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
@@ -70,8 +75,7 @@ public class TakePictureActivity extends AppCompatActivity {
                     + "[0-9]|[0-1][0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1]"
                     + "[0-9]{2}|[1-9][0-9]|[1-9]|0)\\.(25[0-5]|2[0-4][0-9]|[0-1][0-9]{2}"
                     + "|[1-9][0-9]|[0-9]))");
-
-
+    private static String serverIP;
     final int GALLERY_CODE = 1;
     boolean imagesSelected = false;
     private String imageStoragePath;
@@ -80,8 +84,7 @@ public class TakePictureActivity extends AppCompatActivity {
     private ImageView imgPreview;
     private Button btnCapturePicture;
     private Vibrator mVib;
-    private String postUrl = "http://192.168.0.106.:4555/image";
-
+    private static String postUrl;
 
     public static String getPath(final Context context, final Uri uri) {
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
@@ -284,13 +287,21 @@ public class TakePictureActivity extends AppCompatActivity {
     }
 
     public void connectServer(View v) {
+        SharedPreferences sp = getSharedPreferences("mySettings", MODE_PRIVATE);
+        serverIP = sp.getString("IPadd", null);
+        if (serverIP == null) {
+            Toast.makeText(this, "Specify the IP address once", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //changing the post url according to the ip defined
+        postUrl = "http://" + serverIP + ":4555/image";
 
         mVib.vibrate(50);
         if (!imagesSelected) { // This means no image is selected and thus nothing to upload.
             Toast.makeText(this, "No Image Selected to Upload. Select Image(s) and Try Again.", Toast.LENGTH_SHORT).show();
             return;
         }
-        Toast.makeText(this, "Sending the Files. Please Wait ...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Sending the Files to " + serverIP + ". Please Wait ...", Toast.LENGTH_SHORT).show();
 
 
         MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -321,7 +332,11 @@ public class TakePictureActivity extends AppCompatActivity {
 
     void postRequest(String postUrl, RequestBody postBody) {
 
-        OkHttpClient client = new OkHttpClient();
+        OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(30, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .build();
         Request request = new Request.Builder()
                 .url(postUrl)
                 .post(postBody)
@@ -499,20 +514,53 @@ public class TakePictureActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Url");
+            LinearLayout layout = new LinearLayout(this);
+            LinearLayout.LayoutParams parms = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            layout.setOrientation(LinearLayout.VERTICAL);
+            layout.setLayoutParams(parms);
+
+            layout.setGravity(Gravity.CLIP_VERTICAL);
+            layout.setPadding(2, 2, 2, 2);
+
+            TextView tv = new TextView(this);
+            SharedPreferences sp = getSharedPreferences("mySettings", MODE_PRIVATE);
+            String text = "Present IP: " + sp.getString("IPadd", "No IP defined");
+            tv.setText(text);
+            tv.setPadding(40, 40, 40, 40);
+            tv.setGravity(Gravity.CENTER);
+            tv.setTextSize(20);
 
             // Set up the input
             final EditText input = new EditText(this);
-
             // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            input.setInputType(InputType.TYPE_CLASS_PHONE);
             builder.setView(input);
+
+            LinearLayout.LayoutParams tv1Params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            tv1Params.bottomMargin = 5;
+            layout.addView(tv, tv1Params);
+            layout.addView(input, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            builder.setView(layout);
+            builder.setTitle("Specify Server IP");
 
 
             // Set up the buttons
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    serverIP = input.getText().toString().trim();
+                    if (Patterns.IP_ADDRESS.matcher(serverIP).matches()) {
+                        Toast.makeText(TakePictureActivity.this, "Valid IP entered", Toast.LENGTH_SHORT).show();
+                        //if ip is valid set the ip permanent
+                        SharedPreferences sp = getSharedPreferences("mySettings", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sp.edit();
+                        editor.putString("IPadd", serverIP);
+                        editor.apply();
+                    } else {
+                        Toast.makeText(TakePictureActivity.this, "Invalid IP entered", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
