@@ -28,4 +28,4 @@ See also the list of [contributors](https://github.com/shivamkumard107/CurrencyD
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/shivamkumard107/CurrencyDetection/blob/master/LICENSE) file for details
